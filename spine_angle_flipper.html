@@ -1,0 +1,133 @@
+<html>
+<head>
+	<style type="text/css">
+		#displayContainer {
+			width: 256px;
+			height: 256px;
+		}
+		#angleDisplayFlippingPlane {
+			width: 256px;
+			height: 256px;
+			background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1 %7B fill-rule: evenodd; %7D%3C/style%3E%3C/defs%3E%3Cpath class='cls-1' d='M128,256A128,128,0,1,1,256,128,128,128,0,0,1,128,256Zm0-4A123.994,123.994,0,0,0,251.987,129.01L240.952,140V130H4.025A123.994,123.994,0,0,0,128,252ZM128,4A123.994,123.994,0,0,0,4.025,126H240.952V116l11.035,10.99A123.994,123.994,0,0,0,128,4Z'/%3E%3C/svg%3E%0A");
+			background-size: contain;
+			opacity: 0.2;
+			position: absolute;
+			top: 5px;
+			left: 5px;
+		}
+		#angleDisplayBase {
+			width: 256px;
+			height: 256px;
+			background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1 %7B fill-rule: evenodd; %7D%3C/style%3E%3C/defs%3E%3Cpath class='cls-1' d='M128,256A128,128,0,1,1,256,128,128,128,0,0,1,128,256ZM128,4A124,124,0,1,0,252,128c0-.149,0-0.3-0.006-0.444A5.5,5.5,0,0,1,246.5,133h-114a5.5,5.5,0,0,1,0-11h114a5.5,5.5,0,0,1,5.493,5.428A124,124,0,0,0,128,4Z'/%3E%3C/svg%3E");
+			background-size: contain;
+			opacity: 0.2;
+			position: absolute;
+			top: 5px;
+			left: 5px;
+		}
+		#angleDisplayInput {
+			width: 256px;
+			height: 256px;
+			background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1 %7B fill-rule: evenodd; %7D%3C/style%3E%3C/defs%3E%3Cpath class='cls-1' d='M128,256A128,128,0,1,1,256,128,128,128,0,0,1,128,256ZM128,4A124,124,0,1,0,252,128c0-.149,0-0.3-0.006-0.444A5.5,5.5,0,0,1,246.5,133h-114a5.5,5.5,0,0,1,0-11h114a5.5,5.5,0,0,1,5.493,5.428A124,124,0,0,0,128,4Z'/%3E%3C/svg%3E");
+			background-size: contain;
+			position: absolute;
+			top: 5px;
+			left: 5px;
+		}
+		#angleDisplayOutput {
+			width: 256px;
+			height: 256px;
+			background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1 %7B fill: %23bb2015; fill-rule: evenodd; %7D%3C/style%3E%3C/defs%3E%3Cpath class='cls-1' d='M128,256A128,128,0,1,1,256,128,128,128,0,0,1,128,256ZM128,4A124,124,0,1,0,252,128c0-.149,0-0.3-0.006-0.444A5.5,5.5,0,0,1,246.5,133h-115a5.5,5.5,0,0,1,0-11h115a5.5,5.5,0,0,1,5.493,5.428A124,124,0,0,0,128,4Z'/%3E%3C/svg%3E%0A");
+			background-size: contain;
+			opacity: 0.5;
+			position: absolute;
+			top: 5px;
+			left: 5px;
+		}
+	</style>
+</head>
+<body>
+
+<div id="displayContainer">
+	<div id="angleDisplayBase"></div>
+	<div id="angleDisplayFlippingPlane"></div>
+	<div id="angleDisplayInput"></div>
+	<div id="angleDisplayOutput"></div>
+</div>
+
+<br>
+Input angle:<br>
+<small>The current angle you want to flip</small><br>
+<input type="number" id="angleInput" value="30" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input><br>
+<button id="btnPasteAndGo" onclick="paste();">Paste and Solve</button><br><br>
+
+Output:<br>
+<input type="number" id="angleOutput" value="0" readonly onclick="this.select();"></input><br>
+<button id="btnCopy" onclick="copy();">Copy</button><br><br>
+
+Line of Symmetry (optional):<br>
+<small>270: Flip horizontally. 0: Flip vertically.</small><br>
+<input type="number" id="angleFlippingPlane" value="270" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input><br><br>
+
+Base angle (optional):<br>
+<small>Useful for offsetting parented bones</small><br>
+<input type="number" id="angleBase" value="0" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input><br><br>
+
+<script type="application/javascript">
+	async function paste() {
+		var input = document.getElementById("angleInput");
+		const text = await navigator.clipboard.readText();
+		input.value = text;
+		calculate();
+		//copy();
+	}
+	
+	function copy() {
+		var output = document.getElementById("angleOutput");
+		navigator.clipboard.writeText(parseFloat(output.value));
+	}
+	
+	function calculate() {
+		//gather elements
+		var angleDisplayFlippingPlane = document.getElementById("angleDisplayFlippingPlane");
+		var angleDisplayBase = document.getElementById("angleDisplayBase");
+		var angleDisplayInput = document.getElementById("angleDisplayInput");
+		var angleDisplayOutput = document.getElementById("angleDisplayOutput");
+		var formAngleFlippingPlane = document.getElementById("angleFlippingPlane");
+		var formAngleBase = document.getElementById("angleBase");
+		var formAngleInput = document.getElementById("angleInput");
+		var formAngleOutput = document.getElementById("angleOutput");
+
+		//gather values
+		var flippingVal = parseFloat(formAngleFlippingPlane.value);
+		var baseVal = parseFloat(formAngleBase.value);
+		var inputVal = parseFloat(formAngleInput.value);
+		
+		//A reflected angle is just the sum of all angles in the opposite direction of your origin of symmetry.
+		var deltaFlippingVal = trueModulo(360.0 - flippingVal, 360.0);
+		var deltaBaseVal = baseVal + inputVal;
+		var reflectedVal = flippingVal - deltaFlippingVal - deltaBaseVal;
+		reflectedVal = trueModulo(reflectedVal, 360.0);
+		
+		newAngle = parseFloat(reflectedVal.toFixed(3));
+		
+		//send result to the text readout
+		formAngleOutput.value = newAngle;
+
+		//set image transforms
+		angleDisplayFlippingPlane.style.transform = "rotate("+flippingVal+"deg)";
+		angleDisplayBase.style.transform = "rotate("+baseVal+"deg)";
+		angleDisplayInput.style.transform = "rotate("+(inputVal+baseVal)+"deg)";
+		angleDisplayOutput.style.transform = "rotate("+newAngle+"deg)";
+		
+	}
+	
+	function trueModulo(input, modValue) {
+		return ((input%modValue)+modValue)%modValue;
+	}
+</script>
+
+<script>calculate();</script>
+
+</body>
+</html>
