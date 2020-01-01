@@ -1,9 +1,57 @@
 <html>
 <head>
 	<style type="text/css">
+		html {
+			font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif"
+		}
+		#pagecontainer {
+			width: 480px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-content: stretch;
+			box-sizing: border-box;
+			margin: 0 auto;
+		}
 		#displayContainer {
-			width: 256px;
+			/*width: 256px;*/
 			height: 256px;
+			display: flex;
+			width: 100%;
+			margin-bottom: 1em;
+			flex-direction: column;
+			align-content: center;
+			align-items: center;
+			align-self: center;
+			justify-content: center;
+			position: relative;
+		}
+		.halfFlex {
+			box-sizing: border-box;
+			display: flex;
+			width: 50%;
+			flex-direction: column;
+			text-align: center;
+			align-items: stretch;
+			align-content: center;
+			align-self: center;
+			padding: 0px 5px;
+		}
+		.small {
+			font-size: smaller;
+			color: #7BA8CE;
+		}
+		input {
+			text-align: center;
+			height: 30px;
+			border: 1px solid #9BC8FE;
+			margin-bottom: 0.3em;
+		}
+		button {
+			margin-bottom: 1em;
+			height: 30px;
+			border-radius: 10px;
+			background-color: #9BC8FE;
 		}
 		#angleDisplayFlippingPlane {
 			width: 256px;
@@ -12,8 +60,10 @@
 			background-size: contain;
 			opacity: 0.2;
 			position: absolute;
-			top: 5px;
-			left: 5px;
+			top: 50%;
+			left: 50%;
+			margin-top: -128px;
+			margin-left: -128px;
 		}
 		#angleDisplayBase {
 			width: 256px;
@@ -22,8 +72,10 @@
 			background-size: contain;
 			opacity: 0.2;
 			position: absolute;
-			top: 5px;
-			left: 5px;
+			top: 50%;
+			left: 50%;
+			margin-top: -128px;
+			margin-left: -128px;
 		}
 		#angleDisplayInput {
 			width: 256px;
@@ -31,8 +83,10 @@
 			background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1 %7B fill-rule: evenodd; %7D%3C/style%3E%3C/defs%3E%3Cpath class='cls-1' d='M128,256A128,128,0,1,1,256,128,128,128,0,0,1,128,256ZM128,4A124,124,0,1,0,252,128c0-.149,0-0.3-0.006-0.444A5.5,5.5,0,0,1,246.5,133h-114a5.5,5.5,0,0,1,0-11h114a5.5,5.5,0,0,1,5.493,5.428A124,124,0,0,0,128,4Z'/%3E%3C/svg%3E");
 			background-size: contain;
 			position: absolute;
-			top: 5px;
-			left: 5px;
+			top: 50%;
+			left: 50%;
+			margin-top: -128px;
+			margin-left: -128px;
 		}
 		#angleDisplayOutput {
 			width: 256px;
@@ -41,13 +95,16 @@
 			background-size: contain;
 			opacity: 0.5;
 			position: absolute;
-			top: 5px;
-			left: 5px;
+			top: 50%;
+			left: 50%;
+			margin-top: -128px;
+			margin-left: -128px;
 		}
 	</style>
 </head>
 <body>
 
+<div id="pageContainer">
 <div id="displayContainer">
 	<div id="angleDisplayBase"></div>
 	<div id="angleDisplayFlippingPlane"></div>
@@ -55,23 +112,48 @@
 	<div id="angleDisplayOutput"></div>
 </div>
 
-<br>
+<div class="halfFlex">
 Input angle:<br>
-<small>The current angle you want to flip</small><br>
-<input type="number" id="angleInput" value="30" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input><br>
-<button id="btnPasteAndGo" onclick="paste();">Paste and Solve</button><br><br>
+<span class="small">The current angle you want to flip</span>
+</div>
 
-Output:<br>
-<input type="number" id="angleOutput" value="0" readonly onclick="this.select();"></input><br>
-<button id="btnCopy" onclick="copy();">Copy</button><br><br>
+<div class="halfFlex">
+Output:
+</div>
 
+<div class="halfFlex">
+<input type="number" id="angleInput" value="30" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input>
+</div>
+
+<div class="halfFlex">
+<input type="number" id="angleOutput" value="0" readonly onclick="this.select();"></input>
+</div>
+
+<div class="halfFlex">
+<button id="btnPasteAndGo" onclick="paste();">Paste and Solve</button></div>
+
+<div class="halfFlex">
+<button id="btnCopy" onclick="copy();">Copy</button></div>
+
+<div class="halfFlex">
 Line of Symmetry (optional):<br>
-<small>270: Flip horizontally. 0: Flip vertically.</small><br>
-<input type="number" id="angleFlippingPlane" value="270" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input><br><br>
+<span class="small">270: Flip horizontally. 0: Flip vertically.</span>
+</div>
 
+<div class="halfFlex">
 Base angle (optional):<br>
-<small>Useful for offsetting parented bones</small><br>
-<input type="number" id="angleBase" value="0" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input><br><br>
+<span class="small">Useful for offsetting parented bones</span>
+</div>
+
+<div class="halfFlex">
+<input type="number" id="angleFlippingPlane" value="270" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input>
+	</div>
+
+<div class="halfFlex">
+<input type="number" id="angleBase" value="0" onKeyUp="calculate();" onChange="calculate();" onclick="this.select();"></input>
+</div>
+
+</div>
 
 <script type="application/javascript">
 	async function paste() {
